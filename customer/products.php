@@ -200,7 +200,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <div>
-                                <div class="price">₹<?= number_format($p['price'], 2); ?></div>
+                                <div class="price">Rs. <?= number_format($p['price'], 2); ?></div>
                                 <div class="stock">In Stock: <?= $p['stock_quantity']; ?></div>
                             </div>
                         </div>

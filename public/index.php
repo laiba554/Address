@@ -19,7 +19,7 @@ $featured = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pascal Imitation Jewellery</title>
+    <title>Jenny Store</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -144,12 +144,12 @@ $featured = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="/customer/products.php">Products</a>
 
         <?php if (isset($_SESSION['customer_id'])): ?>
-            <a href="/customer/cart.php">Cart</a>
-            <a href="/customer/orders.php">My Orders</a>
-            <a href="/public/logout.php">Logout</a>
+            <a href="../customer/cart.php">Cart</a>
+            <a href="../customer/orders.php">My Orders</a>
+            <a href="../public/logout.php">Logout</a>
         <?php else: ?>
-            <a href="/customer/login.php">Login</a>
-            <a href="/customer/register.php">Register</a>
+            <a href="../customer/login.php">Login</a>
+            <a href="../customer/register.php">Register</a>
         <?php endif; ?>
     </div>
 </nav>
@@ -168,14 +168,14 @@ $featured = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($featured as $p): ?>
             <div class="product">
                 <?php if (!empty($p['image_url'])): ?>
-                    <img src="/uploads/<?= htmlspecialchars($p['image_url']); ?>" alt="<?= htmlspecialchars($p['product_name']); ?>">
+                    <img src="../uploads/<?= htmlspecialchars($p['image_url']); ?>" alt="<?= htmlspecialchars($p['product_name']); ?>">
                 <?php endif; ?>
 
                 <h4><?= htmlspecialchars($p['product_name']); ?></h4>
                 <p><?= htmlspecialchars($p['category_name']); ?></p>
                 <p><strong>Rs. <?= number_format($p['price'], 2); ?></strong></p>
 
-                <a href="/customer/cart.php?add=<?= $p['product_id']; ?>">
+                <a href="../customer/cart.php?add=<?= $p['product_id']; ?>">
                     Add to Cart
                 </a>
             </div>
