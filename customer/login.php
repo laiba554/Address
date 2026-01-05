@@ -26,109 +26,210 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Customer Login | Address Jewelers</title>
+<meta charset="UTF-8">
+<title>Customer Login | Address Jewelers</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Internal CSS -->
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<style>
+/* ================= NAVBAR ================= */
+nav.navbar {
+    background: #0b6b4f;
+    padding: 12px 40px;
+    position: fixed;   /* FIXED TOP */
+    top: 0;            /* STICK TO TOP */
+    width: 100%;       /* FULL WIDTH */
+    z-index: 1030;     /* ABOVE OTHER ELEMENTS */
+}
 
-        .login-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 420px;
-            border-radius: 12px;
-            padding: 35px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        }
+.navbar-brand {
+    font-weight: 700;
+    font-size: 22px;
+    color: #fff;
+}
 
-        .login-card h3 {
-            text-align: center;
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: #1e1e2f;
-        }
+.navbar-nav .nav-link {
+    color: #fff;
+    font-weight: 500;
+    margin-right: 15px;
+    transition: 0.3s;
+}
 
-        .form-control {
-            height: 45px;
-            border-radius: 8px;
-            font-size: 15px;
-        }
+.navbar-nav .nav-link:hover {
+    color: #ffd700;
+}
 
-        .form-control:focus {
-            border-color: #1e1e2f;
-            box-shadow: none;
-        }
+/* ================= LOGIN PAGE ================= */
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    padding-top: 80px; /* OFFSET FOR FIXED NAVBAR */
+    background:
+        radial-gradient(circle at top, rgba(15,61,46,0.06), transparent 45%),
+        #f4f7f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #2c2c2c;
+}
 
-        .btn-login {
-            background-color: #1e1e2f;
-            color: #fff;
-            font-weight: 500;
-            border-radius: 8px;
-            padding: 10px;
-            width: 100%;
-        }
+.login-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 430px;
+    border-radius: 16px;
+    padding: 40px 38px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.10);
+    border: 1px solid #e1e7e4;
+    position: relative;
+}
 
-        .btn-login:hover {
-            background-color: #000;
-        }
+/* Top accent */
+.login-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 6px;
+    width: 100%;
+    background: linear-gradient(90deg, #0f3d2e, #2f6f5c);
+    border-radius: 16px 16px 0 0;
+}
 
-        .error-msg {
-            background-color: #ff4d4d;
-            color: #fff;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 14px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
+.login-card h3 {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #0f3d2e;
+}
 
-        .register-link {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-        }
+.subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 28px;
+}
 
-        .register-link a {
-            color: #1e1e2f;
-            font-weight: 500;
-            text-decoration: none;
-        }
+.form-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 6px;
+}
 
-        .register-link a:hover {
-            text-decoration: underline;
-        }
+.form-control {
+    height: 48px;
+    border-radius: 10px;
+    font-size: 14px;
+    border: 1px solid #d9e0dc;
+    padding-left: 14px;
+}
 
-        .brand-text {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #777;
-        }
-    </style>
+.form-control:focus {
+    border-color: #0f3d2e;
+    box-shadow: 0 0 0 0.15rem rgba(15, 61, 46, 0.12);
+}
+
+/* LOGIN BUTTON */
+.btn-login {
+    background: linear-gradient(135deg, #0b6b4f, #158f6b);
+    color: #ffffff;
+    font-weight: 500;
+    border-radius: 30px;
+    padding: 12px;
+    width: 100%;
+    letter-spacing: 0.4px;
+    border: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 6px 14px rgba(15, 61, 46, 0.18);
+}
+
+.btn-login:hover {
+    background: linear-gradient(135deg, #158f6b, #0b6b4f);
+    color: #ffffff;
+}
+
+.error-msg {
+    background-color: #b00020;
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.divider {
+    height: 1px;
+    background: #e6ece9;
+    margin: 24px 0 18px;
+}
+
+.register-link {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.register-link a {
+    color: #0f3d2e;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+.brand-text {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 12px;
+    color: #888;
+}
+
+@media (max-width: 576px) {
+    .login-card {
+        padding: 32px 26px;
+    }
+}
+</style>
 </head>
+
 <body>
+
+<!-- FIXED TOP NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">Jenny Store</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon" style="color:#fff;"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="../customer/products.php">Products</a></li>
+            <?php if (isset($_SESSION['customer_id'])): ?>
+                <li class="nav-item"><a class="nav-link" href="../customer/cart.php">Cart</a></li>
+                <li class="nav-item"><a class="nav-link" href="../customer/orders.php">My Orders</a></li>
+                <li class="nav-item"><a class="nav-link" href="../public/logout.php">Logout</a></li>
+            <?php else: ?>
+                <li class="nav-item"><a class="nav-link" href="../customer/login.php">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="../customer/register.php">Register</a></li>
+            <?php endif; ?>
+        </ul>
+    </div>
+</nav>
 
 <div class="login-card">
     <h3>Customer Login</h3>
+    <div class="subtitle">Access your jewelry collection</div>
 
     <?php if (!empty($error)): ?>
-        <div class="error-msg">
-            <?= htmlspecialchars($error); ?>
-        </div>
+        <div class="error-msg"><?= htmlspecialchars($error); ?></div>
     <?php endif; ?>
 
     <form method="post">
@@ -142,10 +243,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
         </div>
 
-        <button type="submit" class="btn btn-login mt-2">
+        <button type="submit" class="btn-login mt-2">
             Login
         </button>
     </form>
+
+    <div class="divider"></div>
 
     <div class="register-link">
         New customer?
@@ -157,5 +260,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

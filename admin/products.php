@@ -7,11 +7,8 @@ $categories = $conn->query("
     SELECT * FROM categories ORDER BY category_name
 ")->fetchAll(PDO::FETCH_ASSOC);
 
-/* ===========================
-   EDIT MODE FETCH
-=========================== */
+/* EDIT MODE FETCH */
 $editProduct = null;
-
 if (isset($_GET['edit'])) {
     $id = (int)$_GET['edit'];
     $stmt = $conn->prepare("SELECT * FROM products WHERE product_id = ?");
@@ -19,11 +16,8 @@ if (isset($_GET['edit'])) {
     $editProduct = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-/* ===========================
-   ADD PRODUCT
-=========================== */
+/* ADD PRODUCT */
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['add_product'])) {
-
     $category_id = $_POST['category_id'];
     $name = trim($_POST['product_name']);
     $desc = trim($_POST['product_description']);
@@ -49,11 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['add_product'])) {
     exit;
 }
 
-/* ===========================
-   UPDATE PRODUCT
-=========================== */
+/* UPDATE PRODUCT */
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update_product'])) {
-
     $id = $_POST['product_id'];
     $category_id = $_POST['category_id'];
     $name = trim($_POST['product_name']);
@@ -64,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update_product'])) {
     $oldImage = $_POST['old_image'];
 
     $imageName = $oldImage;
-
     if (!empty($_FILES['image']['name'])) {
         if ($oldImage && file_exists("../uploads/".$oldImage)) {
             unlink("../uploads/".$oldImage);
@@ -85,17 +75,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update_product'])) {
             status=?
         WHERE product_id=?
     ");
-    $stmt->execute([
-        $category_id,$name,$desc,$price,$stock,$imageName,$status,$id
-    ]);
+    $stmt->execute([$category_id,$name,$desc,$price,$stock,$imageName,$status,$id]);
 
     header("Location: products.php");
     exit;
 }
 
-/* ===========================
-   DELETE PRODUCT
-=========================== */
+/* DELETE PRODUCT */
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
 
@@ -124,44 +110,113 @@ $products = $conn->query("
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>Manage Products | Admin</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{background:#1E1E2F;color:#fff}
-h2{color:#FFD700}
-.box{background:#2C2C3E;padding:25px;border-radius:12px}
-label{color:#FFD700}
-input,textarea,select{
-background:#1E1E2F!important;
-color:#fff!important;
-border:1px solid #FFD700!important
+body{
+    background:#f4f7f5;
+    font-family:'Poppins',sans-serif;
+    color:#2c2c2c;
 }
-button{background:#FFD700;color:#000;font-weight:bold}
-table th{color:#FFD700;background:#3a3a55}
+
+.page-wrapper{
+    max-width:1300px;
+    margin:40px auto;
+}
+
+h2{
+    font-weight:700;
+    font-size:30px;
+    background:linear-gradient(90deg,#0f3d2e,#3f8f77);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom:25px;
+}
+
+.card-box{
+    background:#ffffff;
+    border-radius:20px;
+    padding:30px;
+    border:1px solid #e2ece7;
+    box-shadow:0 18px 45px rgba(0,0,0,0.07);
+    margin-bottom:40px;
+}
+
+label{
+    font-size:13px;
+    font-weight:600;
+    color:#0f3d2e;
+}
+
+input,textarea,select{
+    border-radius:12px!important;
+    border:1px solid #cfe1da!important;
+    font-size:14px!important;
+}
+
+.primary-btn{
+     background: linear-gradient(135deg, #0b6b4f, #158f6b);
+            color: #ffffff;
+    border:none;
+    color:#ffffff;
+    font-weight:600;
+    padding:10px 28px;
+    border-radius:30px;
+    transition:0.25s ease;
+}
+
+.primary-btn:hover{
+    background:linear-gradient(135deg,#3f907a,#5db49c);
+    box-shadow:0 10px 25px rgba(79,161,138,0.35);
+}
+
+/* Table */
+.table-wrapper{
+    background:#ffffff;
+    border-radius:20px;
+    padding:25px;
+    border:1px solid #e2ece7;
+    box-shadow:0 18px 45px rgba(0,0,0,0.07);
+}
+
+table th{
+    background:#f0f6f3;
+    color:#0f3d2e;
+    font-weight:600;
+}
+
+.action-btn{
+    padding:5px 14px;
+    font-size:13px;
+    border-radius:20px;
+}
 </style>
 </head>
 <body>
 
 <?php include "../includes/navbar.php"; ?>
 
-<div class="container mt-5 mb-5">
-<h2><?= $editProduct ? 'Update Product' : 'Add Product' ?></h2>
+<div class="page-wrapper container-fluid">
 
-<div class="box mb-5">
+<h2><?= $editProduct ? 'Update Product' : 'Add New Product' ?></h2>
+
+<div class="card-box">
 <form method="post" enctype="multipart/form-data">
 <input type="hidden" name="product_id" value="<?= $editProduct['product_id'] ?? '' ?>">
 <input type="hidden" name="old_image" value="<?= $editProduct['image_url'] ?? '' ?>">
 
-<div class="row g-3">
+<div class="row g-4">
 <div class="col-md-4">
 <label>Category</label>
 <select name="category_id" class="form-control">
 <?php foreach($categories as $c): ?>
-<option value="<?= $c['category_id'] ?>"
-<?= ($editProduct && $editProduct['category_id']==$c['category_id'])?'selected':'' ?>>
+<option value="<?= $c['category_id'] ?>" <?= ($editProduct && $editProduct['category_id']==$c['category_id'])?'selected':'' ?>>
 <?= $c['category_name'] ?>
 </option>
 <?php endforeach; ?>
@@ -169,21 +224,18 @@ table th{color:#FFD700;background:#3a3a55}
 </div>
 
 <div class="col-md-4">
-<label>Name</label>
-<input type="text" name="product_name" class="form-control"
-value="<?= $editProduct['product_name'] ?? '' ?>" required>
+<label>Product Name</label>
+<input type="text" name="product_name" class="form-control" value="<?= $editProduct['product_name'] ?? '' ?>" required>
 </div>
 
 <div class="col-md-4">
-<label>Price</label>
-<input type="number" step="0.01" name="price" class="form-control"
-value="<?= $editProduct['price'] ?? '' ?>" required>
+<label>Price (PKR)</label>
+<input type="number" step="0.01" name="price" class="form-control" value="<?= $editProduct['price'] ?? '' ?>" required>
 </div>
 
 <div class="col-md-4">
-<label>Stock</label>
-<input type="number" name="stock_quantity" class="form-control"
-value="<?= $editProduct['stock_quantity'] ?? '' ?>" required>
+<label>Stock Quantity</label>
+<input type="number" name="stock_quantity" class="form-control" value="<?= $editProduct['stock_quantity'] ?? '' ?>" required>
 </div>
 
 <div class="col-md-4">
@@ -195,7 +247,7 @@ value="<?= $editProduct['stock_quantity'] ?? '' ?>" required>
 </div>
 
 <div class="col-md-4">
-<label>Image</label>
+<label>Product Image</label>
 <input type="file" name="image" class="form-control">
 </div>
 
@@ -205,7 +257,7 @@ value="<?= $editProduct['stock_quantity'] ?? '' ?>" required>
 </div>
 
 <div class="col-12 text-end">
-<button type="submit" name="<?= $editProduct ? 'update_product' : 'add_product' ?>">
+<button type="submit" name="<?= $editProduct ? 'update_product' : 'add_product' ?>" class="primary-btn">
 <?= $editProduct ? 'Update Product' : 'Add Product' ?>
 </button>
 </div>
@@ -213,27 +265,33 @@ value="<?= $editProduct['stock_quantity'] ?? '' ?>" required>
 </form>
 </div>
 
-<div class="box table-responsive">
-<table class="table table-dark table-bordered">
+<div class="table-wrapper table-responsive">
+<table class="table table-borderless align-middle">
 <thead>
 <tr>
-<th>ID</th><th>Image</th><th>Name</th><th>Category</th>
-<th>Price</th><th>Stock</th><th>Status</th><th>Action</th>
+<th>ID</th>
+<th>Image</th>
+<th>Name</th>
+<th>Category</th>
+<th>Price</th>
+<th>Stock</th>
+<th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody>
 <?php foreach($products as $p): ?>
 <tr>
 <td><?= $p['product_id'] ?></td>
-<td><?php if($p['image_url']): ?><img src="../uploads/<?= $p['image_url'] ?>" width="60"><?php endif ?></td>
+<td><?php if($p['image_url']): ?><img src="../uploads/<?= $p['image_url'] ?>" width="60"><?php endif; ?></td>
 <td><?= $p['product_name'] ?></td>
 <td><?= $p['category_name'] ?></td>
-<td>Rs. <?= number_format($p['price'],2) ?></td>
+<td>PKR <?= number_format($p['price'],2) ?></td>
 <td><?= $p['stock_quantity'] ?></td>
 <td><?= $p['status'] ?></td>
 <td>
-<a href="?edit=<?= $p['product_id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-<a href="?delete=<?= $p['product_id'] ?>" class="btn btn-sm btn-danger"
+<a href="?edit=<?= $p['product_id'] ?>" class="btn btn-outline-success action-btn">Edit</a>
+<a href="?delete=<?= $p['product_id'] ?>" class="btn btn-outline-danger action-btn"
 onclick="return confirm('Delete product?')">Delete</a>
 </td>
 </tr>
@@ -241,6 +299,7 @@ onclick="return confirm('Delete product?')">Delete</a>
 </tbody>
 </table>
 </div>
+
 </div>
 
 <?php include "../includes/footer.php"; ?>

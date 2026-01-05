@@ -27,71 +27,133 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Manage Orders | Admin</title>
+<meta charset="UTF-8">
+<title>Manage Orders | Admin</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Internal CSS -->
-    <style>
-        body {
-            background-color: #1E1E2F;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-        }
+<!-- Google Font (same as other admin page for navbar consistency) -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        h2 {
-            color: #FFD700;
-            margin-bottom: 25px;
-        }
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f7f5;
+    color: #063c2e;
+}
 
-        .table-container {
-            background-color: #2C2C3E;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-        }
+/* Heading */
+h2 {
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 30px;
+    background: linear-gradient(90deg, #0b6b4f, #158f6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-        table th {
-            background-color: #3a3a55;
-            color: #FFD700;
-            white-space: nowrap;
-        }
+/* Table Container */
+.table-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+}
 
-        table td {
-            vertical-align: top;
-        }
+/* Table Styling */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
 
-        select, button {
-            background-color: #1E1E2F;
-            color: #FFD700;
-            border: 1px solid #FFD700;
-            border-radius: 6px;
-            padding: 6px;
-        }
+table thead th {
+    background-color: #d7efe6;
+    color: #0b6b4f;
+    font-weight: 600;
+    text-align: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
 
-        button:hover {
-            background-color: #FFD700;
-            color: #1E1E2F;
-        }
+table tbody tr {
+    transition: 0.25s;
+}
 
-        ul {
-            padding-left: 18px;
-            margin-bottom: 0;
-        }
+table tbody tr:nth-child(even) {
+    background: #f9fcfb;
+}
 
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 13px;
-        }
+table tbody tr:hover {
+    background: #e0f1ea;
+    transform: scale(1.01);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
 
-        .Pending { background-color: orange; color: #000; }
-        .Confirmed { background-color: #0dcaf0; color: #000; }
-        .Delivered { background-color: #198754; }
-        .Cancelled { background-color: #dc3545; }
-    </style>
+table td {
+    vertical-align: middle;
+    padding: 12px 10px;
+}
+
+table img {
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 5px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.Pending { background: linear-gradient(135deg,#ffc107,#ffea80); color:#063c2e; }
+.Confirmed { background: linear-gradient(135deg,#0dcaf0,#a0e5ff); color:#063c2e; }
+.Delivered { background: linear-gradient(135deg,#198754,#5cc28f); color:#fff; }
+.Cancelled { background: linear-gradient(135deg,#dc3545,#ff7a7a); color:#fff; }
+
+/* Form Controls */
+select, button {
+    border-radius: 8px;
+    font-size: 14px;
+    border: 1px solid #0b6b4f;
+}
+
+select {
+    padding: 6px 10px;
+    background: #f9fcfb;
+    color: #063c2e;
+    font-weight: 500;
+}
+
+button {
+    padding: 6px 16px;
+    font-weight: 600;
+    background: linear-gradient(135deg,#0b6b4f,#158f6b);
+    color: #fff;
+    transition: 0.25s;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #16a085, #1abc9c);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(22,160,133,0.35);
+}
+
+/* Item List */
+ul {
+    padding-left: 18px;
+    margin-bottom: 0;
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+    h2 { font-size: 24px; }
+    table th, table td { font-size: 13px; }
+}
+</style>
 </head>
 <body>
 
@@ -101,7 +163,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <h2>Manage Orders</h2>
 
     <div class="table-container table-responsive">
-        <table class="table table-bordered table-dark table-hover align-middle">
+        <table class="table align-middle">
             <thead>
                 <tr>
                     <th>Order ID</th>
@@ -115,7 +177,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </tr>
             </thead>
             <tbody>
-
             <?php foreach ($orders as $o): ?>
                 <tr>
                     <td>#<?= $o['order_id']; ?></td>
@@ -125,7 +186,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </td>
                     <td><?= htmlspecialchars($o['cell_phone']); ?></td>
                     <td><?= date("d M Y, h:i A", strtotime($o['order_date'])); ?></td>
-                    <td>₹ <?= number_format($o['total_amount'], 2); ?></td>
+                    <td>₨ <?= number_format($o['total_amount'], 2); ?></td>
                     <td>
                         <span class="status-badge <?= $o['status']; ?>">
                             <?= $o['status']; ?>
@@ -143,12 +204,9 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
                         ?>
                         <ul>
-                            <?php foreach ($items as $item): ?>
-                                <li>
-                                    <?= htmlspecialchars($item['product_name']); ?>
-                                    (<?= $item['quantity']; ?> × ₹<?= number_format($item['price'], 2); ?>)
-                                </li>
-                            <?php endforeach; ?>
+                        <?php foreach ($items as $item): ?>
+                            <li><?= htmlspecialchars($item['product_name']); ?> (<?= $item['quantity']; ?> × ₨<?= number_format($item['price'],2); ?>)</li>
+                        <?php endforeach; ?>
                         </ul>
                     </td>
                     <td>
@@ -156,9 +214,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <input type="hidden" name="order_id" value="<?= $o['order_id']; ?>">
                             <select name="status">
                                 <?php foreach (['Pending','Confirmed','Delivered','Cancelled'] as $s): ?>
-                                    <option value="<?= $s ?>" <?= $o['status']===$s?'selected':'' ?>>
-                                        <?= $s ?>
-                                    </option>
+                                    <option value="<?= $s ?>" <?= $o['status']===$s?'selected':'' ?>><?= $s ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <button type="submit" name="update_status">Save</button>
@@ -166,14 +222,12 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </td>
                 </tr>
             <?php endforeach; ?>
-
             </tbody>
         </table>
     </div>
 </div>
 
 <?php include "../includes/footer.php"; ?>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -41,123 +41,188 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Manage Categories | Admin Panel</title>
+<meta charset="UTF-8">
+<title>Manage Categories | Admin Panel</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Internal CSS Theme -->
-    <style>
-        body {
-            background-color: #1E1E2F;
-            color: #fff;
-            font-family: Arial, sans-serif;
-        }
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f4f7f5;
+        color: #2c2c2c;
+    }
+
+    .admin-box {
+        max-width: 1150px;
+        background: #ffffff;
+        padding: 40px;
+        margin: 40px auto;
+        border-radius: 18px;
+        box-shadow: 0 28px 60px rgba(0,0,0,0.08);
+        border: 1px solid #e0ebe5;
+    }
+
+    .page-title {
+        text-align: center;
+        font-weight: 700;
+        font-size: 30px;
+        margin-bottom: 30px;
+        background: linear-gradient(90deg, #0f3d2e, #2f6f5c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .section-title {
+        font-weight: 600;
+        font-size: 20px;
+        color: #0f3d2e;
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        border: 1px solid #d6e5df;
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .form-control:focus {
+        border-color: #1abc9c;
+        box-shadow: 0 0 0 0.15rem rgba(26,188,156,.25);
+    }
+
+    .btn-primary-custom {
+         background: linear-gradient(135deg, #0b6b4f, #158f6b);
+            color: #ffffff;
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 30px;
+        border: none;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-custom:hover {
+        background: linear-gradient(135deg, #16a085, #1abc9c);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(22,160,133,0.35);
+    }
+
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border-radius: 12px;
+        border: none;
+        font-weight: 500;
+    }
+
+    .alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        border-radius: 12px;
+        border: none;
+        font-weight: 500;
+    }
+
+    .table-wrapper {
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 18px 40px rgba(0,0,0,0.06);
+        overflow: hidden;
+        border: 1px solid #e0ebe5;
+    }
+
+    table {
+        margin-bottom: 0;
+    }
+
+    table thead {
+        background: #f1f7f6;
+    }
+
+    table th {
+        font-weight: 600;
+        color: #0f3d2e;
+        text-align: center;
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    table td {
+        text-align: center;
+        vertical-align: middle;
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    table tbody tr:hover {
+        background: #f7fbfa;
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-delete:hover {
+        box-shadow: 0 8px 20px rgba(231,76,60,0.35);
+        transform: translateY(-1px);
+    }
+
+    hr {
+        border-color: #e0ebe5;
+        margin: 30px 0;
+    }
+
+    @media (max-width: 768px) {
         .admin-box {
-            background-color: #2C2C3E;
-            padding: 30px;
-            margin-top: 40px;
-            border-radius: 10px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            padding: 25px 20px;
         }
 
-        h2, h4 {
-            color: #FFD700;
+        .page-title {
+            font-size: 26px;
         }
-
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .form-control, textarea {
-            background-color: #1E1E2F;
-            color: #fff;
-            border: 1px solid #555;
-        }
-
-        .form-control:focus {
-            background-color: #1E1E2F;
-            color: #fff;
-            border-color: #FFD700;
-            box-shadow: none;
-        }
-
-        .btn-gold {
-            background-color: #FFD700;
-            color: #1E1E2F;
-            font-weight: bold;
-            border: none;
-        }
-
-        .btn-gold:hover {
-            background-color: #e6c200;
-        }
-
-        table {
-            background-color: #1E1E2F;
-        }
-
-        table th {
-            background-color: #111;
-            color: #FFD700;
-            text-align: center;
-        }
-
-        table td {
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .btn-delete {
-            background-color: #e74c3c;
-            color: #fff;
-            border: none;
-        }
-
-        .btn-delete:hover {
-            background-color: #c0392b;
-        }
-
-        .alert-success {
-            background-color: #2ecc71;
-            color: #000;
-            border: none;
-        }
-
-        .alert-danger {
-            background-color: #e74c3c;
-            color: #fff;
-            border: none;
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 
-<!-- Navbar -->
 <?php include "../includes/navbar.php"; ?>
 
-<div class="container admin-box">
+<div class="admin-box">
 
-    <h2 class="text-center mb-4">Manage Categories</h2>
+    <h2 class="page-title">Manage Categories</h2>
 
-    <!-- Messages -->
     <?php if ($success): ?>
-        <div class="alert alert-success text-center">
+        <div class="alert alert-success text-center mb-4">
             <?= htmlspecialchars($success); ?>
         </div>
     <?php endif; ?>
 
     <?php if ($error): ?>
-        <div class="alert alert-danger text-center">
+        <div class="alert alert-danger text-center mb-4">
             <?= htmlspecialchars($error); ?>
         </div>
     <?php endif; ?>
 
-    <!-- Add Category Form -->
-    <h4>Add New Category</h4>
+    <h4 class="section-title">Add New Category</h4>
+
     <form method="post" class="mb-4">
         <div class="mb-3">
             <label>Category Name</label>
@@ -169,18 +234,17 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <textarea name="description" class="form-control" rows="3"></textarea>
         </div>
 
-        <button type="submit" name="add_category" class="btn btn-gold px-4">
+        <button type="submit" name="add_category" class="btn-primary-custom">
             Add Category
         </button>
     </form>
 
-    <hr style="border-color:#444;">
+    <hr>
 
-    <!-- Category List -->
-    <h4 class="mb-3">Category List</h4>
+    <h4 class="section-title">Category List</h4>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
+    <div class="table-wrapper table-responsive">
+        <table class="table table-hover align-middle">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -190,7 +254,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </tr>
             </thead>
             <tbody>
-                <?php if (count($categories) > 0): ?>
+                <?php if ($categories): ?>
                     <?php foreach ($categories as $cat): ?>
                         <tr>
                             <td><?= (int)$cat['category_id']; ?></td>
@@ -198,7 +262,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?= htmlspecialchars($cat['description']); ?></td>
                             <td>
                                 <a href="?delete=<?= (int)$cat['category_id']; ?>"
-                                   class="btn btn-delete btn-sm"
+                                   class="btn-delete"
                                    onclick="return confirm('Are you sure you want to delete this category?')">
                                    Delete
                                 </a>
@@ -207,7 +271,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4">No categories found.</td>
+                        <td colspan="4" class="text-muted">No categories found.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -216,7 +280,6 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 </div>
 
-<!-- Footer -->
 <?php include "../includes/footer.php"; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

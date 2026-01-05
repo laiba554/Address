@@ -3,69 +3,97 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Get current page for active link
+$currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-    <a class="navbar-brand fw-bold" href="dashboard.php">
-        Address Jewelers
-    </a>
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: linear-gradient(135deg, #0b6b4f, #158f6b);">
+    <div class="container-fluid px-4">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
+            <img src="../assets/logo.png" alt="Logo" width="40" height="40" class="me-2 rounded-circle shadow-sm">
+            <span class="fw-bold fs-5 text-white">Jenny Store</span>
+        </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Toggler for mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="adminNavbar">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Menu Items -->
+        <div class="collapse navbar-collapse" id="adminNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-            <li class="nav-item">
-                <a class="nav-link" href="dashboard.php">Dashboard</a>
-            </li>
+                <?php
+                $navItems = [
+                    'dashboard.php' => 'Dashboard',
+                    'categories.php' => 'Categories',
+                    'products.php' => 'Products',
+                    'customers.php' => 'Customers',
+                    'orders.php' => 'Orders',
+                    'reports.php' => 'Reports',
+                    'backup.php' => 'Backup'
+                ];
 
-            <li class="nav-item">
-                <a class="nav-link" href="categories.php">Categories</a>
-            </li>
+                foreach ($navItems as $file => $label):
+                ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= $currentPage === $file ? 'active fw-bold' : '' ?>" href="<?= $file ?>">
+                        <?= $label ?>
+                    </a>
+                </li>
+                <?php endforeach; ?>
+            </ul>
 
-            <li class="nav-item">
-                <a class="nav-link" href="products.php">Products</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="customers.php">Customers</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="orders.php">Orders</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="reports.php">Reports</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="backup.php">Backup</a>
-            </li>
-        </ul>
-
-        <div class="d-flex align-items-center text-white">
-            <span class="me-3">
-                <?= htmlspecialchars($_SESSION['admin_role'] ?? 'Admin'); ?>
-            </span>
-            <a href="logout.php" class="btn btn-outline-light btn-sm">
-                Logout
-            </a>
+            <!-- Admin info & logout -->
+            <div class="d-flex align-items-center text-white">
+                <span class="me-3">
+                    <i class="bi bi-person-circle"></i>
+                    <?= htmlspecialchars($_SESSION['admin_role'] ?? 'Admin'); ?>
+                </span>
+                <a href="logout.php" class="btn btn-outline-light btn-sm fw-bold">
+                    Logout
+                </a>
+            </div>
         </div>
     </div>
 </nav>
 
-<style>
-    /* Remove horizontal scroll caused by navbar */
-    body {
-        overflow-x: hidden;
-    }
+<!-- Optional Bootstrap Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
+<style>
+/* Sticky Navbar */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Active Link Highlight */
+.navbar-nav .nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+}
+
+/* NavLink Hover Effect */
+.navbar-nav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    transition: 0.25s;
+}
+
+/* Logo Shadow */
+.navbar-brand img {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Responsive Adjustments */
+@media(max-width: 991px) {
+    .navbar-nav .nav-link {
+        padding: 10px 15px;
+        text-align: center;
     }
+}
 </style>

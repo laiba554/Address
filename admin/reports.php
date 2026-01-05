@@ -30,48 +30,91 @@ $topCustomers = $conn->query("
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Reports | Admin</title>
+<meta charset="UTF-8">
+<title>Reports | Admin</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Internal CSS -->
-    <style>
-        body {
-            background-color: #1E1E2F;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-        }
+<!-- Google Font (same as other admin pages for navbar consistency) -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        h2 {
-            color: #FFD700;
-            margin-bottom: 20px;
-        }
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f7f5;
+    color: #063c2e;
+}
 
-        .report-box {
-            background-color: #2C2C3E;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            margin-bottom: 40px;
-        }
+/* Heading */
+h2 {
+    font-weight: 700;
+    font-size: 26px;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #0b6b4f, #158f6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-        table th {
-            background-color: #3a3a55;
-            color: #FFD700;
-            white-space: nowrap;
-        }
+/* Report Card */
+.report-box {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.07);
+    margin-bottom: 40px;
+    transition: 0.3s;
+}
 
-        table td {
-            vertical-align: middle;
-        }
+.report-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.1);
+}
 
-        .rank {
-            font-weight: bold;
-            color: #FFD700;
-        }
-    </style>
+/* Table Styling */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+table th {
+    background: #d7efe6;
+    color: #0b6b4f;
+    font-weight: 600;
+    text-align: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 12px;
+}
+
+table td {
+    padding: 12px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+table tbody tr:nth-child(even) {
+    background: #f9fcfb;
+}
+
+table tbody tr:hover {
+    background: #e0f1ea;
+    transform: scale(1.01);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.rank {
+    font-weight: 700;
+    color: #0b6b4f;
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+    h2 { font-size: 22px; }
+    table th, table td { font-size: 13px; padding: 8px; }
+}
+</style>
 </head>
 <body>
 
@@ -83,7 +126,7 @@ $topCustomers = $conn->query("
     <div class="report-box table-responsive">
         <h2>Top 10 Best-Selling Products</h2>
 
-        <table class="table table-dark table-bordered table-hover">
+        <table class="table align-middle">
             <thead>
                 <tr>
                     <th>Rank</th>
@@ -112,7 +155,7 @@ $topCustomers = $conn->query("
     <div class="report-box table-responsive">
         <h2>Top 10 Customers by Purchases</h2>
 
-        <table class="table table-dark table-bordered table-hover">
+        <table class="table align-middle">
             <thead>
                 <tr>
                     <th>Rank</th>
@@ -125,7 +168,7 @@ $topCustomers = $conn->query("
                 <tr>
                     <td class="rank">#<?= $rank++ ?></td>
                     <td><?= htmlspecialchars($c['name']) ?></td>
-                    <td>₹ <?= number_format($c['total_spent'], 2) ?></td>
+                    <td>₨ <?= number_format($c['total_spent'], 2) ?></td>
                 </tr>
                 <?php endforeach; ?>
                 <?php if (empty($topCustomers)): ?>
@@ -140,7 +183,6 @@ $topCustomers = $conn->query("
 </div>
 
 <?php include "../includes/footer.php"; ?>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

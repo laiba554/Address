@@ -34,70 +34,103 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
             height: 100vh;
+            background: linear-gradient(135deg, #eaf5f1, #d7efe6);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
         }
 
-        .login-box {
-            background: rgba(255,255,255,0.15);
-            padding: 40px;
+        .login-wrapper {
             width: 100%;
             max-width: 420px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
-            color: #fff;
+            padding: 42px 38px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 18px 45px rgba(6, 60, 46, 0.18);
+            border: 1px solid #e3ebe7;
         }
 
-        .login-box h3 {
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
             text-align: center;
-            margin-bottom: 30px;
-            font-weight: 600;
+            color: #063c2e;
+            margin-bottom: 4px;
+            letter-spacing: 0.8px;
+        }
+
+        .brand-subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #6f8f84;
+            margin-bottom: 28px;
+        }
+
+        .form-label {
+            color: #063c2e;
+            font-weight: 500;
+            font-size: 14px;
         }
 
         .form-control {
-            border-radius: 6px;
+            border-radius: 8px;
+            padding: 11px 12px;
+            border: 1px solid #cfded8;
+            background-color: #f9fcfb;
+        }
+
+        .form-control:focus {
+            border-color: #0b6b4f;
+            box-shadow: 0 0 0 2px rgba(11, 107, 79, 0.15);
         }
 
         .btn-login {
-            background-color: #ffffff;
-            color: #000;
-            font-weight: bold;
-            border-radius: 6px;
+            background: linear-gradient(135deg, #0b6b4f, #158f6b);
+            color: #ffffff;
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 12px;
+            border: none;
+            letter-spacing: 0.4px;
         }
 
         .btn-login:hover {
-            background-color: #000;
-            color: #fff;
+            background: linear-gradient(135deg, #158f6b, #0b6b4f);
+            color: #ffffff;
         }
 
         .error-msg {
-            background-color: #ff4d4d;
+            background-color: #f8d7da;
+            color: #842029;
             padding: 10px;
             border-radius: 6px;
             text-align: center;
-            margin-bottom: 15px;
             font-size: 14px;
+            margin-bottom: 18px;
+            border: 1px solid #f1aeb5;
         }
 
         .footer-text {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 24px;
             font-size: 13px;
-            opacity: 0.9;
+            color: #7a8f86;
         }
     </style>
 </head>
 <body>
 
-<div class="login-box">
-    <h3>Admin Login</h3>
+<div class="login-wrapper">
+
+    <div class="brand-title">Address Jewelers</div>
+    <div class="brand-subtitle">Admin Control Panel</div>
 
     <?php if (!empty($error)): ?>
         <div class="error-msg"><?= $error ?></div>
@@ -109,19 +142,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="text" name="username" class="form-control" required>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-4">
             <label class="form-label">Password</label>
             <input type="password" name="password" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn btn-login w-100 mt-3">
-            Login
+        <button type="submit" class="btn btn-login w-100">
+            Secure Login
         </button>
     </form>
 
     <div class="footer-text">
-        &copy; 2025 Address Jewelers
+        &copy; 2025 Address Jewelers · Authorized Access Only
     </div>
+
 </div>
 
 </body>

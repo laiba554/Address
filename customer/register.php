@@ -17,13 +17,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
         $stmt = $conn->prepare("
             INSERT INTO customers
-            (name, address, email, work_phone, cell_phone, date_of_birth, remarks)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            (name, address, email, work_phone, cell_phone, date_of_birth, remarks, password)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $stmt->execute([
             $name, $address, $email,
             $work_phone, $cell_phone,
-            $dob, $remarks
+            $dob, $remarks, $password
         ]);
 
         $_SESSION['customer_id'] = $conn->lastInsertId();
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
 
     } catch (PDOException $e) {
-        $error = "Email already exists";
+        $error = "Email already exists or invalid data";
     }
 }
 ?>
@@ -40,86 +40,132 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Customer Registration</title>
+<meta charset="UTF-8">
+<title>Customer Registration | Address Jewelers</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
-            min-height: 100vh;
-        }
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f0f5f3, #e0ece7);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
 
-        .register-container {
-            max-width: 650px;
-            margin: 60px auto;
-        }
+    .register-container {
+        max-width: 700px;
+        width: 100%;
+    }
 
+    .register-card {
+        background: #fff;
+        padding: 40px 35px;
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .register-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 28px 60px rgba(0,0,0,0.12);
+    }
+
+    .register-title {
+        font-weight: 700;
+        color: #0f3d2e;
+        font-size: 28px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #0f3d2e;
+    }
+
+    .form-control, textarea {
+        border-radius: 12px;
+        border: 1px solid #cdd9d6;
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .form-control:focus, textarea:focus {
+        border-color: #16a085;
+        box-shadow: 0 0 8px rgba(22,160,133,0.2);
+    }
+
+    .btn-register {
+        background: linear-gradient(135deg, #1abc9c, #16a085);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 30px;
+        padding: 12px 0;
+        font-size: 15px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .btn-register:hover {
+        background: linear-gradient(135deg, #16a085, #1abc9c);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(22,160,133,0.35);
+    }
+
+    .error-msg {
+        background: #ffecec;
+        color: #d8000c;
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .login-link a {
+        text-decoration: none;
+        font-weight: 600;
+        color: #16a085;
+        transition: all 0.3s;
+    }
+
+    .login-link a:hover {
+        color: #1abc9c;
+    }
+
+    @media (max-width: 576px) {
         .register-card {
-            background: #fff;
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 30px 20px;
         }
 
         .register-title {
-            font-weight: 600;
-            color: #1e1e2f;
+            font-size: 24px;
         }
-
-        .form-label {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .form-control, textarea {
-            border-radius: 10px;
-        }
-
-        .btn-register {
-            background: #1e1e2f;
-            color: #fff;
-            border-radius: 10px;
-            padding: 12px;
-            font-weight: 500;
-        }
-
-        .btn-register:hover {
-            background: #000;
-        }
-
-        .error-msg {
-            background: #ffecec;
-            color: #d8000c;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .login-link {
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .login-link a {
-            text-decoration: none;
-            font-weight: 500;
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 
 <div class="register-container">
     <div class="register-card">
 
-        <h3 class="register-title text-center mb-4">Create Your Account</h3>
+        <h3 class="register-title">Create Your Account</h3>
 
         <?php if ($error): ?>
             <div class="error-msg"><?= $error; ?></div>
@@ -160,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <div class="col-md-6">
                     <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" required>
+                    <input type="password" name="password" class="form-control"required>
                 </div>
 
                 <div class="col-md-12">
@@ -173,12 +219,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         Register Account
                     </button>
                 </div>
+
             </div>
         </form>
 
-        <div class="login-link mt-4">
-            Already have an account?
-            <a href="login.php">Login here</a>
+        <div class="login-link">
+            Already have an account? <a href="login.php">Login here</a>
         </div>
 
     </div>

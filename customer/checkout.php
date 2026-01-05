@@ -62,73 +62,134 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Checkout | Address Jewelers</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>Checkout | Address Jewelers</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f9;
-            padding-top: 60px;
-            color: #333;
-        }
+<style>
+/* ================= NAVBAR ================= */
+nav.navbar {
+    background: #0b6b4f;
+    padding: 12px 40px;
+    position: fixed;   /* FIXED TOP */
+    top: 0;            /* STICK TO TOP */
+    width: 100%;       /* FULL WIDTH */
+    z-index: 1030;     /* ABOVE OTHER ELEMENTS */
+}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+.navbar-brand {
+    font-weight: 700;
+    font-size: 22px;
+    color: #fff;
+}
 
-        .customer-info, .cart-table, .checkout-btn {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-        }
+.navbar-nav .nav-link {
+    color: #fff;
+    font-weight: 500;
+    margin-right: 15px;
+    transition: 0.3s;
+}
 
-        .customer-info p {
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
+.navbar-nav .nav-link:hover {
+    color: #ffd700;
+}
 
-        table th {
-            background-color: #007bff;
-            color: #fff;
-            text-align: center;
-        }
+/* =================================================
+   EMERALD • PEARL — PROFESSIONAL CHECKOUT UI
+================================================= */
 
-        table td {
-            text-align: center;
-            vertical-align: middle;
-        }
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(180deg, #F7F9F9, #EFEFEF);
+    padding-top: 80px; /* OFFSET FOR FIXED NAVBAR */
+    color: #1C1C1C;
+}
 
-        .grand-total {
-            font-size: 18px;
-            font-weight: bold;
-            text-align: right;
-        }
+.container {
+    max-width: 1000px;
+}
 
-        .btn-place-order {
-            background-color: #28a745;
-            color: white;
-            font-weight: bold;
-            width: 100%;
-        }
+/* Page Title */
+h2 {
+    text-align: center;
+    margin-bottom: 45px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    color: #0F3D3E;
+}
 
-        .btn-place-order:hover {
-            background-color: #218838;
-            color: white;
-        }
+/* Card Sections */
+.customer-info,
+.cart-table,
+.checkout-btn {
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(15, 61, 62, 0.12);
+}
 
-        @media (max-width: 768px) {
-            table td, table th {
-                font-size: 14px;
-            }
-        }
-    </style>
+/* Section Headings */
+.customer-info h5 {
+    color: #0F3D3E;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+/* Customer Info */
+.customer-info p {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+/* Table */
+table th {
+    background: #0F3D3E;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 14px;
+}
+
+table td {
+    text-align: center;
+    padding: 13px;
+}
+
+/* Place Order Button */
+.btn-place-order {
+    background: linear-gradient(135deg, #1E5F60, #3A8F8A);
+    color: #FFFFFF;
+    font-weight: 500;
+    border-radius: 40px;
+    padding: 14px;
+    border: none;
+}
+</style>
 </head>
+
 <body>
+
+<!-- FIXED TOP NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">Jenny Store</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon" style="color:#fff;"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="../public/index.php">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="../customer/products.php">Products</a></li>
+            <?php if (isset($_SESSION['customer_id'])): ?>
+                <li class="nav-item"><a class="nav-link" href="../customer/cart.php">Cart</a></li>
+                <li class="nav-item"><a class="nav-link" href="../customer/orders.php">My Orders</a></li>
+                <li class="nav-item"><a class="nav-link" href="../public/logout.php">Logout</a></li>
+            <?php else: ?>
+                <li class="nav-item"><a class="nav-link" href="../customer/login.php">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="../customer/register.php">Register</a></li>
+            <?php endif; ?>
+        </ul>
+    </div>
+</nav>
 
 <div class="container">
     <h2>Checkout</h2>
@@ -142,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     </div>
 
     <div class="cart-table table-responsive">
-        <table class="table table-bordered align-middle">
+        <table class="table align-middle">
             <thead>
                 <tr>
                     <th>Product</th>
@@ -154,7 +215,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             <tbody>
                 <?php $grandTotal = 0; ?>
                 <?php foreach ($items as $item): ?>
-                    <?php $total = $item['price'] * $item['quantity']; $grandTotal += $total; ?>
+                    <?php
+                        $total = $item['price'] * $item['quantity'];
+                        $grandTotal += $total;
+                    ?>
                     <tr>
                         <td><?= htmlspecialchars($item['product_name']); ?></td>
                         <td><?= number_format($item['price'], 2); ?></td>
@@ -163,8 +227,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     </tr>
                 <?php endforeach; ?>
                 <tr>
-                    <td colspan="3" class="text-end"><strong>Grand Total</strong></td>
-                    <td><strong><?= number_format($grandTotal, 2); ?></strong></td>
+                    <td colspan="3" class="text-end">Grand Total</td>
+                    <td><?= number_format($grandTotal, 2); ?></td>
                 </tr>
             </tbody>
         </table>
@@ -172,7 +236,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
 
     <div class="checkout-btn">
         <form method="post">
-            <button type="submit" name="place_order" class="btn btn-place-order btn-lg">Place Order</button>
+            <button type="submit" name="place_order" class="btn btn-place-order btn-lg w-100">
+                Place Order
+            </button>
         </form>
     </div>
 </div>

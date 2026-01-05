@@ -12,148 +12,214 @@ $totalOrders     = $conn->query("SELECT COUNT(*) FROM orders")->fetchColumn();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard | Jewelry Store</title>
+<meta charset="UTF-8">
+<title>Admin Dashboard | Jewelry Store</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Internal CSS -->
-    <style>
-        body {
-            background-color: #1E1E2F;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f4f7f5;
+        color: #2c2c2c;
+    }
+
+    .dashboard-wrapper {
+        max-width: 1280px;
+        margin: 40px auto;
+        padding: 0 15px;
+    }
+
+    .dashboard-header {
+        margin-bottom: 35px;
+    }
+
+    .dashboard-header h2 {
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(90deg, #0f3d2e, #2f6f5c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 6px;
+    }
+
+    .dashboard-header p {
+        font-size: 14px;
+        color: #6b7d77;
+        margin: 0;
+    }
+
+    /* Stats Cards */
+    .stat-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 30px 20px;
+        text-align: center;
+        border: 1px solid #e2ece7;
+        box-shadow: 0 18px 45px rgba(0,0,0,0.07);
+        transition: all 0.25s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 28px 65px rgba(0,0,0,0.1);
+    }
+
+    .stat-value {
+        font-size: 38px;
+        font-weight: 700;
+        color: #0f3d2e;
+        margin-bottom: 4px;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        color: #6b7d77;
+        font-weight: 500;
+    }
+
+    /* Navigation Section */
+    .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #0f3d2e;
+        margin: 45px 0 18px;
+    }
+
+    .nav-card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 28px 20px;
+        text-align: center;
+        border: 1px solid #e2ece7;
+        box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+        transition: all 0.25s ease;
+        height: 100%;
+    }
+
+    .nav-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 26px 60px rgba(0,0,0,0.1);
+    }
+
+    .nav-card a {
+        text-decoration: none;
+        font-weight: 600;
+        color: #0f3d2e;
+        font-size: 15px;
+        display: block;
+    }
+
+    .nav-card span {
+        display: block;
+        font-size: 13px;
+        color: #6b7d77;
+        margin-top: 6px;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-header h2 {
+            font-size: 26px;
         }
 
-        .dashboard-container {
-            margin-top: 40px;
+        .stat-value {
+            font-size: 32px;
         }
-
-        h2 {
-            color: #FFD700;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background-color: #2C2C3E;
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card h3 {
-            font-size: 36px;
-            color: #FFD700;
-        }
-
-        .stat-card p {
-            margin: 0;
-            font-size: 16px;
-            color: #ccc;
-        }
-
-        .nav-card {
-            background-color: #2C2C3E;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            transition: 0.2s;
-        }
-
-        .nav-card a {
-            color: #FFD700;
-            font-weight: bold;
-            text-decoration: none;
-            display: block;
-        }
-
-        .nav-card:hover {
-            background-color: #3a3a55;
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 
-<!-- Navbar -->
 <?php include "../includes/navbar.php"; ?>
 
-<div class="container dashboard-container">
+<div class="dashboard-wrapper">
 
-    <h2 class="text-center">Admin Dashboard</h2>
+    <div class="dashboard-header text-center">
+        <h2>Admin Dashboard</h2>
+        <p>Overview & management controls for your jewelry store</p>
+    </div>
 
-    <!-- Statistics Cards -->
-    <div class="row g-4 mb-5">
-        <div class="col-md-3">
+    <!-- Statistics -->
+    <div class="row g-4">
+        <div class="col-md-3 col-sm-6">
             <div class="stat-card">
-                <h3><?= (int)$totalCategories ?></h3>
-                <p>Total Categories</p>
+                <div class="stat-value"><?= (int)$totalCategories ?></div>
+                <div class="stat-label">Categories</div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-6">
             <div class="stat-card">
-                <h3><?= (int)$totalProducts ?></h3>
-                <p>Total Products</p>
+                <div class="stat-value"><?= (int)$totalProducts ?></div>
+                <div class="stat-label">Products</div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-6">
             <div class="stat-card">
-                <h3><?= (int)$totalCustomers ?></h3>
-                <p>Total Customers</p>
+                <div class="stat-value"><?= (int)$totalCustomers ?></div>
+                <div class="stat-label">Customers</div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-6">
             <div class="stat-card">
-                <h3><?= (int)$totalOrders ?></h3>
-                <p>Total Orders</p>
+                <div class="stat-value"><?= (int)$totalOrders ?></div>
+                <div class="stat-label">Orders</div>
             </div>
         </div>
     </div>
 
-    <!-- Navigation Cards -->
+    <!-- Navigation -->
+    <div class="section-title text-center">Quick Management</div>
+
     <div class="row g-4">
         <div class="col-md-4">
             <div class="nav-card">
                 <a href="categories.php">Manage Categories</a>
+                <span>Create & organize product categories</span>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="nav-card">
                 <a href="products.php">Manage Products</a>
+                <span>Add, edit & manage inventory</span>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="nav-card">
                 <a href="customers.php">View Customers</a>
+                <span>Customer accounts & details</span>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="nav-card">
                 <a href="orders.php">View Orders</a>
+                <span>Track & manage customer orders</span>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="nav-card">
                 <a href="reports.php">Reports</a>
+                <span>Sales & performance insights</span>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="nav-card">
                 <a href="backup.php">Database Backup</a>
+                <span>Secure & manage system backups</span>
             </div>
         </div>
     </div>
 
 </div>
 
-<!-- Footer -->
 <?php include "../includes/footer.php"; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
