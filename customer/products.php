@@ -42,7 +42,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Products | Address Jewelers</title>
+<title>Products | Jenny Store</title>
 
 <!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -54,7 +54,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 body {
     font-family: 'Poppins', sans-serif;
     background: #f4f7f5;
-    padding-top: 90px; /* OFFSET FOR FIXED NAVBAR */
+    padding-top: 90px;
     color: #2c2c2c;
 }
 
@@ -117,12 +117,23 @@ nav.navbar {
     color: #0f3d2e;
 }
 
+/* ================= BUTTONS (From Featured Products Page) ================= */
 .btn-search {
-    background: linear-gradient(135deg, #1abc9c, #16a085);
+    display: inline-block;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #0b6b4f, #158f6b);
     color: #fff;
-    font-weight: 600;
-    border-radius: 25px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
     border: none;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btn-search:hover {
+    background: linear-gradient(135deg, #158f6b, #0b6b4f);
+    color: #fff;
 }
 
 /* PRODUCT CARD */
@@ -169,14 +180,26 @@ nav.navbar {
     color: #16a085;
 }
 
+/* Add to Cart Button Updated */
 .btn-cart {
-    background: linear-gradient(135deg, #1abc9c, #16a085);
-    color: #fff;
-    border-radius: 25px;
-    font-weight: 600;
+    display: inline-block;
     margin-top: 15px;
-    width: 100%;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #0b6b4f, #158f6b);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
     border: none;
+    transition: 0.3s;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-cart:hover {
+    background: linear-gradient(135deg, #158f6b, #0b6b4f);
+    color: #fff;
 }
 
 .no-products {
@@ -185,6 +208,16 @@ nav.navbar {
     border-radius: 20px;
     text-align: center;
     box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+}
+
+/* FOOTER */
+footer {
+    background: #0b6b4f;
+    color: #f0f0f0;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 60px;
+    font-size: 14px;
 }
 </style>
 </head>
@@ -232,7 +265,7 @@ nav.navbar {
                     <option value="">All Categories</option>
                     <?php foreach ($categories as $cat): ?>
                         <option value="<?= $cat['category_id']; ?>"
-                            <?= (($_GET['category_id'] ?? '') == $cat['category_id']) ? 'selected' : '' ?>>
+                            <?= (($_GET['category_id'] ?? '') == $cat['category_id']) ? 'selected' : '' ?> >
                             <?= htmlspecialchars($cat['category_name']); ?>
                         </option>
                     <?php endforeach; ?>
@@ -240,7 +273,7 @@ nav.navbar {
             </div>
 
             <div class="col-md-2 d-grid">
-                <button class="btn btn-search">Search</button>
+                <button class="btn-search">Search</button>
             </div>
         </form>
     </div>
@@ -269,7 +302,7 @@ nav.navbar {
                         <div class="price mt-2">Rs. <?= number_format($p['price'], 2); ?></div>
                         <div class="stock">In Stock: <?= $p['stock_quantity']; ?></div>
 
-                        <a href="cart.php?add=<?= $p['product_id']; ?>" class="btn btn-cart">
+                        <a href="cart.php?add=<?= $p['product_id']; ?>" class="btn-cart">
                             Add to Cart
                         </a>
                     </div>
@@ -279,6 +312,11 @@ nav.navbar {
     </div>
 
 </div>
+
+<!-- FOOTER -->
+<footer>
+    © <?= date('Y'); ?> Jenny Store. All Rights Reserved.
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

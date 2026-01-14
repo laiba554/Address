@@ -178,7 +178,7 @@ $featured = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="/">Jenny Store</a>
+    <a class="navbar-brand" href="../public/index.php">Jenny Store</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon" style="color:#fff;"></span>
     </button>

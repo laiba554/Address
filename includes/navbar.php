@@ -12,8 +12,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <div class="container-fluid px-4">
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
-            <img src="../assets/logo.png" alt="Logo" width="40" height="40" class="me-2 rounded-circle shadow-sm">
-            <span class="fw-bold fs-5 text-white">Jenny Store</span>
+            <img src="../uploads/logo.jpeg" alt="Logo" width="40" height="40" class="me-2 rounded-circle shadow-sm">
+            <span class="fw-bold fs-5 text-white"></span>
         </a>
 
         <!-- Toggler for mobile -->

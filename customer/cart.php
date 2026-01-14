@@ -78,7 +78,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Shopping Cart | Address Jewelers</title>
+<title>Shopping Cart | Jenny Store</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
@@ -86,10 +86,10 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 nav.navbar {
     background: #0b6b4f;
     padding: 12px 40px;
-    position: fixed;       /* FIXED TOP */
-    top: 0;                /* STICK TO TOP */
-    width: 100%;           /* FULL WIDTH */
-    z-index: 1030;         /* ABOVE OTHER ELEMENTS */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
 }
 
 .navbar-brand {
@@ -111,10 +111,13 @@ nav.navbar {
 
 /* ================= PAGE UI ================= */
 body {
-    font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(180deg, #F7F9F9, #EFEFEF);
-    padding-top: 80px; /* OFFSET FOR FIXED NAVBAR */
-    color: #1C1C1C;
+    font-family: 'Poppins', sans-serif;
+    background: #f4f7f5;
+    padding-top: 90px;
+    color: #2c2c2c;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
@@ -125,19 +128,19 @@ h2 {
     text-align: center;
     margin-bottom: 40px;
     font-weight: 600;
-    color: #0F3D3E;
+    color: #0f3d2e;
 }
 
 table {
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 12px 35px rgba(15, 61, 62, 0.12);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
 }
 
 th {
-    background: #0F3D3E;
-    color: #FFFFFF;
+    background: #0f3d2e;
+    color: #ffffff;
     text-align: center;
     padding: 16px;
 }
@@ -155,24 +158,33 @@ input[type=number] {
     padding: 7px;
 }
 
+/* ================= BUTTONS ================= */
 .btn {
-    border-radius: 40px;
-    padding: 10px 28px;
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #0b6b4f, #158f6b);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    transition: 0.3s;
+    text-decoration: none;
+    cursor: pointer;
 }
 
-.btn-update {
-    background: #0F3D3E;
-    color: #FFFFFF;
+.btn:hover {
+    background: linear-gradient(135deg, #158f6b, #0b6b4f);
+    color: #fff;
 }
 
 .btn-remove {
-    background: #F0F0F0;
-    color: #1C1C1C;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 
-.btn-checkout {
-    background: linear-gradient(135deg, #1E5F60, #3A8F8A);
-    color: #FFFFFF;
+.btn-remove:hover {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
 }
 
 .grand-total {
@@ -180,7 +192,7 @@ input[type=number] {
     font-weight: 600;
     text-align: right;
     margin-top: 25px;
-    color: #0F3D3E;
+    color: #0f3d2e;
 }
 
 .cart-actions {
@@ -188,14 +200,37 @@ input[type=number] {
     justify-content: space-between;
     margin-top: 35px;
 }
+
+footer {
+    background: #0b6b4f;
+    color: #f0f0f0;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+    font-size: 14px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- FIXED TOP NAVBAR -->
 <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="/">Jenny Store</a>
+    <a class="navbar-brand" href="/">
+        <img src="../uploads/logo.jpeg"
+             alt="Logo"
+             width="40"
+             height="40"
+             style="
+                border-radius:50%;
+                object-fit:contain;
+                background:#ffffff;
+                padding:2px;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+                margin-right:8px;
+             ">
+        Jenny Store
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon" style="color:#fff;"></span>
     </button>
@@ -224,9 +259,9 @@ input[type=number] {
                 <thead>
                     <tr>
                         <th>Product</th>
-                        <th>Price ($)</th>
+                        <th>Price (PKR)</th>
                         <th>Quantity</th>
-                        <th>Total ($)</th>
+                        <th>Total (PKR)</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -239,11 +274,11 @@ input[type=number] {
                     ?>
                     <tr>
                         <td><?= htmlspecialchars($item['product_name']); ?></td>
-                        <td><?= number_format($item['price'], 2); ?></td>
+                        <td>PKR <?= number_format($item['price'], 2); ?></td>
                         <td>
                             <input type="number" name="quantity[<?= $item['cart_item_id']; ?>]" value="<?= $item['quantity']; ?>" min="1">
                         </td>
-                        <td><?= number_format($total, 2); ?></td>
+                        <td>PKR <?= number_format($total, 2); ?></td>
                         <td>
                             <a href="?remove=<?= $item['cart_item_id']; ?>" class="btn btn-remove btn-sm">Remove</a>
                         </td>
@@ -259,15 +294,19 @@ input[type=number] {
         </div>
 
         <div class="grand-total">
-            Grand Total: $<?= number_format($grandTotal, 2); ?>
+            Grand Total: PKR <?= number_format($grandTotal, 2); ?>
         </div>
 
         <div class="cart-actions">
-            <button type="submit" name="update" class="btn btn-update">Update Cart</button>
-            <a href="checkout.php" class="btn btn-checkout">Proceed to Checkout</a>
+            <button type="submit" name="update" class="btn">Update Cart</button>
+            <a href="checkout.php" class="btn">Proceed to Checkout</a>
         </div>
     </form>
 </div>
+
+<footer>
+    © <?= date('Y'); ?> Jenny Store. All Rights Reserved.
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

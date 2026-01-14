@@ -40,10 +40,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 nav.navbar {
     background: #0b6b4f;
     padding: 12px 40px;
-    position: fixed;   /* FIXED TOP */
-    top: 0;            /* STICK TO TOP */
-    width: 100%;       /* FULL WIDTH */
-    z-index: 1030;     /* ABOVE OTHER ELEMENTS */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
 }
 
 .navbar-brand {
@@ -67,7 +67,7 @@ nav.navbar {
 body {
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
-    padding-top: 80px; /* OFFSET FOR FIXED NAVBAR */
+    padding-top: 80px;
     background:
         radial-gradient(circle at top, rgba(15,61,46,0.06), transparent 45%),
         #f4f7f5;
@@ -75,6 +75,7 @@ body {
     justify-content: center;
     align-items: center;
     color: #2c2c2c;
+    flex-direction: column;
 }
 
 .login-card {
@@ -192,6 +193,17 @@ body {
     color: #888;
 }
 
+/* ================= FOOTER ================= */
+footer {
+    background: #0b6b4f;
+    color: #f0f0f0;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 60px;
+    font-size: 14px;
+    width: 100%;
+}
+
 @media (max-width: 576px) {
     .login-card {
         padding: 32px 26px;
@@ -243,9 +255,7 @@ body {
             <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
         </div>
 
-        <button type="submit" class="btn-login mt-2">
-            Login
-        </button>
+        <button type="submit" class="btn-login mt-2">Login</button>
     </form>
 
     <div class="divider"></div>
@@ -259,6 +269,11 @@ body {
         © 2025 Address Jewelers
     </div>
 </div>
+
+<!-- FOOTER -->
+<footer>
+    © <?= date('Y'); ?> Jenny Store. All Rights Reserved.
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

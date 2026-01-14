@@ -25,22 +25,39 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['add_product'])) {
     $stock = $_POST['stock_quantity'];
     $status = $_POST['status'];
 
-    $imageName = null;
-    if (!empty($_FILES['image']['name'])) {
-        $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $imageName = time() . "_" . uniqid() . "." . $ext;
-        move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/" . $imageName);
+    /* VALIDATIONS */
+    $errors = [];
+
+    if ($price < 0) {
+        $errors[] = "Price cannot be negative.";
     }
 
-    $stmt = $conn->prepare("
-        INSERT INTO products
-        (category_id, product_name, product_description, price, stock_quantity, image_url, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ");
-    $stmt->execute([$category_id,$name,$desc,$price,$stock,$imageName,$status]);
+    if ($stock < 0) {
+        $errors[] = "Stock quantity cannot be negative.";
+    }
 
-    header("Location: products.php");
-    exit;
+    $imageName = null;
+    if (!empty($_FILES['image']['name'])) {
+        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        if (!in_array($ext, ['png','jpg','jpeg'])) {
+            $errors[] = "Only PNG, JPG, JPEG images are allowed.";
+        } else {
+            $imageName = time() . "_" . uniqid() . "." . $ext;
+            move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/" . $imageName);
+        }
+    }
+
+    if (empty($errors)) {
+        $stmt = $conn->prepare("
+            INSERT INTO products
+            (category_id, product_name, product_description, price, stock_quantity, image_url, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
+        $stmt->execute([$category_id,$name,$desc,$price,$stock,$imageName,$status]);
+
+        header("Location: products.php");
+        exit;
+    }
 }
 
 /* UPDATE PRODUCT */
@@ -54,31 +71,48 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update_product'])) {
     $status = $_POST['status'];
     $oldImage = $_POST['old_image'];
 
-    $imageName = $oldImage;
-    if (!empty($_FILES['image']['name'])) {
-        if ($oldImage && file_exists("../uploads/".$oldImage)) {
-            unlink("../uploads/".$oldImage);
-        }
-        $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $imageName = time()."_".uniqid().".".$ext;
-        move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/".$imageName);
+    /* VALIDATIONS */
+    $errors = [];
+
+    if ($price < 0) {
+        $errors[] = "Price cannot be negative.";
     }
 
-    $stmt = $conn->prepare("
-        UPDATE products SET
-            category_id=?,
-            product_name=?,
-            product_description=?,
-            price=?,
-            stock_quantity=?,
-            image_url=?,
-            status=?
-        WHERE product_id=?
-    ");
-    $stmt->execute([$category_id,$name,$desc,$price,$stock,$imageName,$status,$id]);
+    if ($stock < 0) {
+        $errors[] = "Stock quantity cannot be negative.";
+    }
 
-    header("Location: products.php");
-    exit;
+    $imageName = $oldImage;
+    if (!empty($_FILES['image']['name'])) {
+        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        if (!in_array($ext, ['png','jpg','jpeg'])) {
+            $errors[] = "Only PNG, JPG, JPEG images are allowed.";
+        } else {
+            if ($oldImage && file_exists("../uploads/".$oldImage)) {
+                unlink("../uploads/".$oldImage);
+            }
+            $imageName = time()."_".uniqid().".".$ext;
+            move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/".$imageName);
+        }
+    }
+
+    if (empty($errors)) {
+        $stmt = $conn->prepare("
+            UPDATE products SET
+                category_id=?,
+                product_name=?,
+                product_description=?,
+                price=?,
+                stock_quantity=?,
+                image_url=?,
+                status=?
+            WHERE product_id=?
+        ");
+        $stmt->execute([$category_id,$name,$desc,$price,$stock,$imageName,$status,$id]);
+
+        header("Location: products.php");
+        exit;
+    }
 }
 
 /* DELETE PRODUCT */
@@ -196,6 +230,12 @@ table th{
     font-size:13px;
     border-radius:20px;
 }
+
+.error-msg{
+    color:red;
+    font-weight:600;
+    margin-bottom:15px;
+}
 </style>
 </head>
 <body>
@@ -207,6 +247,13 @@ table th{
 <h2><?= $editProduct ? 'Update Product' : 'Add New Product' ?></h2>
 
 <div class="card-box">
+
+<?php if (!empty($errors)): ?>
+<div class="error-msg">
+<?php foreach($errors as $err) echo $err."<br>"; ?>
+</div>
+<?php endif; ?>
+
 <form method="post" enctype="multipart/form-data">
 <input type="hidden" name="product_id" value="<?= $editProduct['product_id'] ?? '' ?>">
 <input type="hidden" name="old_image" value="<?= $editProduct['image_url'] ?? '' ?>">

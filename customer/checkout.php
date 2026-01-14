@@ -30,10 +30,6 @@ $stmt = $conn->prepare("
 $stmt->execute([$cart_id]);
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if (!$items) {
-    die("Your cart is empty!");
-}
-
 /* PLACE ORDER */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
 
@@ -63,28 +59,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Checkout | Address Jewelers</title>
+<title>Checkout | Jenny Store</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 /* ================= NAVBAR ================= */
 nav.navbar {
-    background: #0b6b4f;
+    background: linear-gradient(135deg, #0b6b4f, #158f6b);
     padding: 12px 40px;
-    position: fixed;   /* FIXED TOP */
-    top: 0;            /* STICK TO TOP */
-    width: 100%;       /* FULL WIDTH */
-    z-index: 1030;     /* ABOVE OTHER ELEMENTS */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
 }
 
 .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-weight: 700;
-    font-size: 22px;
-    color: #fff;
+    font-size: 20px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.navbar-brand span {
+    letter-spacing: 0.5px;
 }
 
 .navbar-nav .nav-link {
-    color: #fff;
+    color: #ffffff;
     font-weight: 500;
     margin-right: 15px;
     transition: 0.3s;
@@ -94,22 +98,21 @@ nav.navbar {
     color: #ffd700;
 }
 
-/* =================================================
-   EMERALD • PEARL — PROFESSIONAL CHECKOUT UI
-================================================= */
-
+/* ================= PAGE ================= */
 body {
     font-family: 'Montserrat', sans-serif;
     background: linear-gradient(180deg, #F7F9F9, #EFEFEF);
-    padding-top: 80px; /* OFFSET FOR FIXED NAVBAR */
+    padding-top: 90px;
     color: #1C1C1C;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
     max-width: 1000px;
 }
 
-/* Page Title */
 h2 {
     text-align: center;
     margin-bottom: 45px;
@@ -118,7 +121,6 @@ h2 {
     color: #0F3D3E;
 }
 
-/* Card Sections */
 .customer-info,
 .cart-table,
 .checkout-btn {
@@ -129,20 +131,12 @@ h2 {
     box-shadow: 0 10px 30px rgba(15, 61, 62, 0.12);
 }
 
-/* Section Headings */
 .customer-info h5 {
     color: #0F3D3E;
     margin-bottom: 18px;
     font-weight: 600;
 }
 
-/* Customer Info */
-.customer-info p {
-    margin-bottom: 8px;
-    font-size: 15px;
-}
-
-/* Table */
 table th {
     background: #0F3D3E;
     color: #FFFFFF;
@@ -155,38 +149,55 @@ table td {
     padding: 13px;
 }
 
-/* Place Order Button */
 .btn-place-order {
-    background: linear-gradient(135deg, #1E5F60, #3A8F8A);
-    color: #FFFFFF;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #0b6b4f, #158f6b);
+    color: #fff;
+    border-radius: 8px;
     font-weight: 500;
-    border-radius: 40px;
-    padding: 14px;
     border: none;
+    transition: 0.3s;
+}
+
+.btn-place-order:hover {
+    background: linear-gradient(135deg, #158f6b, #0b6b4f);
+}
+
+footer {
+    background: #0b6b4f;
+    color: #f0f0f0;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+    font-size: 14px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- FIXED TOP NAVBAR -->
-<nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="/">Jenny Store</a>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="../public/index.php">
+        <img src="../uploads/logo.jpeg"
+             alt="Logo"
+             width="40"
+             height="40"
+             class="rounded-circle bg-white p-1 shadow-sm">
+        <span>Jenny Store</span>
+    </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon" style="color:#fff;"></span>
+        <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
             <li class="nav-item"><a class="nav-link" href="../public/index.php">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="../customer/products.php">Products</a></li>
-            <?php if (isset($_SESSION['customer_id'])): ?>
-                <li class="nav-item"><a class="nav-link" href="../customer/cart.php">Cart</a></li>
-                <li class="nav-item"><a class="nav-link" href="../customer/orders.php">My Orders</a></li>
-                <li class="nav-item"><a class="nav-link" href="../public/logout.php">Logout</a></li>
-            <?php else: ?>
-                <li class="nav-item"><a class="nav-link" href="../customer/login.php">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="../customer/register.php">Register</a></li>
-            <?php endif; ?>
+            <li class="nav-item"><a class="nav-link" href="../customer/cart.php">Cart</a></li>
+            <li class="nav-item"><a class="nav-link" href="../customer/orders.php">My Orders</a></li>
+            <li class="nav-item"><a class="nav-link" href="../public/logout.php">Logout</a></li>
         </ul>
     </div>
 </nav>
@@ -207,9 +218,9 @@ table td {
             <thead>
                 <tr>
                     <th>Product</th>
-                    <th>Price ($)</th>
+                    <th>Price</th>
                     <th>Quantity</th>
-                    <th>Total ($)</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -227,8 +238,8 @@ table td {
                     </tr>
                 <?php endforeach; ?>
                 <tr>
-                    <td colspan="3" class="text-end">Grand Total</td>
-                    <td><?= number_format($grandTotal, 2); ?></td>
+                    <td colspan="3" class="text-end fw-bold">Grand Total</td>
+                    <td class="fw-bold"><?= number_format($grandTotal, 2); ?></td>
                 </tr>
             </tbody>
         </table>
@@ -236,12 +247,16 @@ table td {
 
     <div class="checkout-btn">
         <form method="post">
-            <button type="submit" name="place_order" class="btn btn-place-order btn-lg w-100">
+            <button type="submit" name="place_order" class="btn-place-order">
                 Place Order
             </button>
         </form>
     </div>
 </div>
+
+<footer>
+    © <?= date('Y'); ?> Jenny Store. All Rights Reserved.
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

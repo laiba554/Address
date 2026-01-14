@@ -39,18 +39,18 @@ body {
     font-family: 'Poppins', sans-serif;
     background: #f4f7f5;
     color: #2c2c2c;
-    padding-top: 90px; /* OFFSET FOR FIXED NAVBAR */
+    padding-top: 90px;
 }
 
 /* NAVBAR */
 nav.navbar {
     background: #0b6b4f;
     padding: 12px 40px;
-    position: fixed;   /* FIXED TOP */
+    position: fixed;
     top: 0;
     width: 100%;
     z-index: 1030;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* subtle shadow */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .navbar-brand {
@@ -74,7 +74,7 @@ nav.navbar {
 .orders-container {
     max-width: 1100px;
     margin: auto;
-    padding: 0 15px 40px;
+    padding: 0 15px 120px; /* bottom padding for footer */
 }
 
 .page-title {
@@ -171,6 +171,18 @@ nav.navbar {
     font-weight: 600;
     border: none;
 }
+
+/* FOOTER */
+footer {
+    background: #0b6b4f;
+    color: #f0f0f0;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
 </style>
 </head>
 
@@ -256,6 +268,11 @@ nav.navbar {
     <?php endif; ?>
 
 </div>
+
+<!-- FOOTER -->
+<footer>
+    © <?= date('Y'); ?> Jenny Store. All Rights Reserved.
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
