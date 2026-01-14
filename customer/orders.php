@@ -42,7 +42,7 @@ body {
     padding-top: 90px;
 }
 
-/* NAVBAR */
+/* ================= NAVBAR ================= */
 nav.navbar {
     background: #0b6b4f;
     padding: 12px 40px;
@@ -54,9 +54,21 @@ nav.navbar {
 }
 
 .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-weight: 700;
     font-size: 22px;
     color: #fff !important;
+}
+
+.navbar-brand img {
+    border-radius: 50%;
+    background: #fff;
+    padding: 2px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
 
 .navbar-nav .nav-link {
@@ -188,9 +200,12 @@ footer {
 
 <body>
 
-<!-- NAVBAR -->
+<!-- ================= NAVBAR ================= -->
 <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="/">Jenny Store</a>
+    <a class="navbar-brand" href="/">
+        <img src="../uploads/logo.jpeg" alt="Logo">
+        Jenny Store
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon" style="color:#fff;"></span>
     </button>
@@ -255,13 +270,13 @@ footer {
                     <?php foreach ($items as $item): ?>
                         <li>
                             <span><?= htmlspecialchars($item['product_name']); ?> (x<?= $item['quantity']; ?>)</span>
-                            <span>₹<?= number_format($item['price'] * $item['quantity'], 2); ?></span>
+                            <span>PKR <?= number_format($item['price'] * $item['quantity'], 2); ?></span>
                         </li>
                     <?php endforeach; ?>
                 </ul>
 
                 <div class="total-amount">
-                    Total: ₹<?= number_format($o['total_amount'], 2); ?>
+                    Total: PKR <?= number_format($o['total_amount'], 2); ?>
                 </div>
             </div>
         <?php endforeach; ?>

@@ -63,9 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-/* ================= NAVBAR ================= */
+/* ================= NAVBAR (FROM CART PAGE) ================= */
 nav.navbar {
-    background: linear-gradient(135deg, #0b6b4f, #158f6b);
+    background: #0b6b4f;
     padding: 12px 40px;
     position: fixed;
     top: 0;
@@ -74,21 +74,13 @@ nav.navbar {
 }
 
 .navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
     font-weight: 700;
-    font-size: 20px;
-    color: #ffffff;
-    text-decoration: none;
-}
-
-.navbar-brand span {
-    letter-spacing: 0.5px;
+    font-size: 22px;
+    color: #fff;
 }
 
 .navbar-nav .nav-link {
-    color: #ffffff;
+    color: #fff;
     font-weight: 500;
     margin-right: 15px;
     transition: 0.3s;
@@ -177,18 +169,27 @@ footer {
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="../public/index.php">
+<!-- ================= NAVBAR (FROM CART PAGE) ================= -->
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
         <img src="../uploads/logo.jpeg"
              alt="Logo"
              width="40"
              height="40"
-             class="rounded-circle bg-white p-1 shadow-sm">
-        <span>Jenny Store</span>
+             style="
+                border-radius:50%;
+                object-fit:contain;
+                background:#ffffff;
+                padding:2px;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+                margin-right:8px;
+             ">
+        Jenny Store
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon" style="color:#fff;"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">

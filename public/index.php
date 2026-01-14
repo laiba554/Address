@@ -38,16 +38,33 @@ $featured = $stmt->fetchAll(PDO::FETCH_ASSOC);
             text-decoration: none;
         }
 
-        /* NAVBAR */
+        /* ================= NAVBAR ================= */
         nav.navbar {
             background: #0b6b4f;
             padding: 12px 40px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1030;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-weight: 700;
             font-size: 22px;
-            color: #fff;
+            color: #fff !important;
+        }
+
+        .navbar-brand img {
+            border-radius: 50%;
+            background: #fff;
+            padding: 2px;
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
         }
 
         .navbar-nav .nav-link {
@@ -178,7 +195,10 @@ $featured = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="../public/index.php">Jenny Store</a>
+    <a class="navbar-brand" href="../public/index.php">
+        <img src="../uploads/logo.jpeg" alt="Logo">
+        Jenny Store
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon" style="color:#fff;"></span>
     </button>

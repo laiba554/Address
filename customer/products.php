@@ -58,7 +58,7 @@ body {
     color: #2c2c2c;
 }
 
-/* NAVBAR */
+/* ================= NAVBAR ================= */
 nav.navbar {
     background: #0b6b4f;
     padding: 12px 40px;
@@ -70,9 +70,21 @@ nav.navbar {
 }
 
 .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-weight: 700;
     font-size: 22px;
     color: #fff !important;
+}
+
+.navbar-brand img {
+    border-radius: 50%;
+    background: #fff;
+    padding: 2px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
 
 .navbar-nav .nav-link {
@@ -117,7 +129,7 @@ nav.navbar {
     color: #0f3d2e;
 }
 
-/* ================= BUTTONS (From Featured Products Page) ================= */
+/* BUTTONS */
 .btn-search {
     display: inline-block;
     padding: 10px 18px;
@@ -180,7 +192,6 @@ nav.navbar {
     color: #16a085;
 }
 
-/* Add to Cart Button Updated */
 .btn-cart {
     display: inline-block;
     margin-top: 15px;
@@ -224,9 +235,12 @@ footer {
 
 <body>
 
-<!-- NAVBAR -->
+<!-- ================= NAVBAR ================= -->
 <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="/">Jenny Store</a>
+    <a class="navbar-brand" href="/">
+        <img src="../uploads/logo.jpeg" alt="Logo">
+        Jenny Store
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon" style="color:#fff;"></span>
     </button>

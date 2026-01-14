@@ -13,7 +13,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
             <img src="../uploads/logo.jpeg" alt="Logo" width="40" height="40" class="me-2 rounded-circle shadow-sm">
-            <span class="fw-bold fs-5 text-white"></span>
+            <span class="fw-bold fs-5 text-white">Jenny Store</span>
         </a>
 
         <!-- Toggler for mobile -->

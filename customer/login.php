@@ -29,10 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <meta charset="UTF-8">
 <title>Customer Login | Address Jewelers</title>
 
-<!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
@@ -89,7 +86,6 @@ body {
     position: relative;
 }
 
-/* Top accent */
 .login-card::before {
     content: "";
     position: absolute;
@@ -135,7 +131,6 @@ body {
     box-shadow: 0 0 0 0.15rem rgba(15, 61, 46, 0.12);
 }
 
-/* LOGIN BUTTON */
 .btn-login {
     background: linear-gradient(135deg, #0b6b4f, #158f6b);
     color: #ffffff;
@@ -143,15 +138,12 @@ body {
     border-radius: 30px;
     padding: 12px;
     width: 100%;
-    letter-spacing: 0.4px;
     border: none;
-    transition: all 0.25s ease;
-    box-shadow: 0 6px 14px rgba(15, 61, 46, 0.18);
+    transition: 0.25s;
 }
 
 .btn-login:hover {
     background: linear-gradient(135deg, #158f6b, #0b6b4f);
-    color: #ffffff;
 }
 
 .error-msg {
@@ -203,27 +195,39 @@ footer {
     font-size: 14px;
     width: 100%;
 }
-
-@media (max-width: 576px) {
-    .login-card {
-        padding: 32px 26px;
-    }
-}
 </style>
 </head>
 
 <body>
 
-<!-- FIXED TOP NAVBAR -->
+<!-- ================= NAVBAR (SAME AS OTHER PAGES) ================= -->
 <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="/">Jenny Store</a>
+    <a class="navbar-brand" href="/">
+        <img src="../uploads/logo.jpeg"
+             alt="Logo"
+             width="40"
+             height="40"
+             style="
+                border-radius:50%;
+                object-fit:contain;
+                background:#ffffff;
+                padding:2px;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+                margin-right:8px;
+             ">
+        Jenny Store
+    </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon" style="color:#fff;"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="../public/index.php">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="../customer/products.php">Products</a></li>
+
             <?php if (isset($_SESSION['customer_id'])): ?>
                 <li class="nav-item"><a class="nav-link" href="../customer/cart.php">Cart</a></li>
                 <li class="nav-item"><a class="nav-link" href="../customer/orders.php">My Orders</a></li>
@@ -247,12 +251,12 @@ footer {
     <form method="post">
         <div class="mb-3">
             <label class="form-label">Email Address</label>
-            <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+            <input type="email" name="email" class="form-control" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+            <input type="password" name="password" class="form-control" required>
         </div>
 
         <button type="submit" class="btn-login mt-2">Login</button>
@@ -270,7 +274,6 @@ footer {
     </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
     © <?= date('Y'); ?> Jenny Store. All Rights Reserved.
 </footer>
