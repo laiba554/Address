@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             try {
                 // Check duplicate email
-                $checkStmt = $conn->prepare("SELECT id FROM customers WHERE email = ?");
+                $checkStmt = $conn->prepare("SELECT customer_id FROM customers WHERE email = ?");
                 $checkStmt->execute([$email]);
 
                 if ($checkStmt->rowCount() > 0) {
