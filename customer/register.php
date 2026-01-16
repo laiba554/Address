@@ -23,12 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     /* =======================
        SERVER-SIDE VALIDATIONS
     ======================== */
-
-    if ($name === '' || strlen($name) < 3 || strlen($name) > 100 || !preg_match("/^[a-zA-Z\s.'-]+$/", $name)) {
-        $error = "Please enter a valid full name.";
+    if ($name === '' || strlen($name) < 3) {
+        $error = "Please enter your full name (minimum 3 characters).";
     }
-    elseif ($address === '' || strlen($address) < 5 || strlen($address) > 255) {
-        $error = "Please enter a valid address.";
+    elseif ($address === '' || strlen($address) < 5) {
+        $error = "Please enter a valid address (minimum 5 characters).";
     }
     elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Please enter a valid email address.";
@@ -60,7 +59,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $password = password_hash($password_raw, PASSWORD_DEFAULT);
 
             try {
-
                 // Check duplicate email
                 $checkStmt = $conn->prepare("SELECT id FROM customers WHERE email = ?");
                 $checkStmt->execute([$email]);
@@ -68,13 +66,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($checkStmt->rowCount() > 0) {
                     $error = "Email already exists.";
                 } else {
-
                     $stmt = $conn->prepare("
                         INSERT INTO customers
                         (name, address, email, work_phone, cell_phone, date_of_birth, remarks, password)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     ");
-
                     $stmt->execute([
                         $name,
                         $address,
@@ -94,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
 
             } catch (PDOException $e) {
-                $error = "Something went wrong. Please try again.";
+                $error = "Database error: " . $e->getMessage();
             }
         }
     }
@@ -149,6 +145,10 @@ body {
     border-radius: 30px;
     padding: 12px 0;
     border: none;
+    transition: 0.3s;
+}
+.btn-register:hover {
+    opacity: 0.9;
 }
 .error-msg {
     background: #ffecec;
@@ -168,7 +168,36 @@ footer {
     bottom: 0;
     width: 100%;
 }
+.login-link { text-align: center; color: #0f3d2e; }
+.login-link a { color: #16a085; text-decoration: none; font-weight: 500; }
+.login-link a:hover { text-decoration: underline; }
 </style>
+
+<script>
+function validateForm() {
+    const name = document.forms["registerForm"]["name"].value.trim();
+    const address = document.forms["registerForm"]["address"].value.trim();
+    const email = document.forms["registerForm"]["email"].value.trim();
+    const cell = document.forms["registerForm"]["cell_phone"].value.trim();
+    const work = document.forms["registerForm"]["work_phone"].value.trim();
+    const dob = document.forms["registerForm"]["date_of_birth"].value;
+    const password = document.forms["registerForm"]["password"].value;
+
+    if (name.length < 3) { alert("Full name must be at least 3 characters."); return false; }
+    if (address.length < 5) { alert("Address must be at least 5 characters."); return false; }
+    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    if (!emailPattern.test(email)) { alert("Please enter a valid email."); return false; }
+    if (!/^\d{11}$/.test(cell)) { alert("Cell phone must be exactly 11 digits."); return false; }
+    if (work && !/^\d{11}$/.test(work)) { alert("Work phone must be exactly 11 digits."); return false; }
+    if (!dob) { alert("Please select your date of birth."); return false; }
+    const age = new Date().getFullYear() - new Date(dob).getFullYear();
+    if (age < 12) { alert("You must be at least 12 years old."); return false; }
+    if (password.length < 8) { alert("Password must be at least 8 characters."); return false; }
+
+    return true;
+}
+</script>
+
 </head>
 <body>
 
@@ -181,53 +210,47 @@ footer {
 <div class="error-msg"><?= htmlspecialchars($error); ?></div>
 <?php endif; ?>
 
-<form method="post">
+<form name="registerForm" method="post" onsubmit="return validateForm();">
 <div class="row g-3">
 
 <div class="col-md-12">
 <label class="form-label">Full Name</label>
-<input type="text" name="name" class="form-control"
-required minlength="3" maxlength="100"
-pattern="[A-Za-z\s.'-]+">
+<input type="text" name="name" class="form-control" required minlength="3" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>">
 </div>
 
 <div class="col-md-12">
 <label class="form-label">Address</label>
-<textarea name="address" class="form-control"
-required minlength="5" maxlength="255"></textarea>
+<textarea name="address" class="form-control" required minlength="5"><?= htmlspecialchars($_POST['address'] ?? '') ?></textarea>
 </div>
 
 <div class="col-md-12">
 <label class="form-label">Email Address</label>
-<input type="email" name="email" class="form-control" required>
+<input type="email" name="email" class="form-control" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
 </div>
 
 <div class="col-md-6">
 <label class="form-label">Work Phone</label>
-<input type="text" name="work_phone" class="form-control"
-pattern="\d{11}" maxlength="11" inputmode="numeric">
+<input type="text" name="work_phone" class="form-control" pattern="\d{11}" maxlength="11" inputmode="numeric" value="<?= htmlspecialchars($_POST['work_phone'] ?? '') ?>">
 </div>
 
 <div class="col-md-6">
 <label class="form-label">Cell Phone</label>
-<input type="text" name="cell_phone" class="form-control"
-required pattern="\d{11}" maxlength="11" inputmode="numeric">
+<input type="text" name="cell_phone" class="form-control" required pattern="\d{11}" maxlength="11" inputmode="numeric" value="<?= htmlspecialchars($_POST['cell_phone'] ?? '') ?>">
 </div>
 
 <div class="col-md-6">
 <label class="form-label">Date of Birth</label>
-<input type="date" name="date_of_birth" class="form-control" required>
+<input type="date" name="date_of_birth" class="form-control" required value="<?= htmlspecialchars($_POST['date_of_birth'] ?? '') ?>">
 </div>
 
 <div class="col-md-6">
 <label class="form-label">Password</label>
-<input type="password" name="password" class="form-control"
-required minlength="8">
+<input type="password" name="password" class="form-control" required minlength="8">
 </div>
 
 <div class="col-md-12">
 <label class="form-label">Remarks (Optional)</label>
-<textarea name="remarks" class="form-control" maxlength="500"></textarea>
+<textarea name="remarks" class="form-control" maxlength="500"><?= htmlspecialchars($_POST['remarks'] ?? '') ?></textarea>
 </div>
 
 <div class="col-12 d-grid mt-3">
@@ -237,7 +260,7 @@ required minlength="8">
 </div>
 </form>
 
-<div class="login-link">
+<div class="login-link mt-3">
 Already have an account? <a href="login.php">Login here</a>
 </div>
 
